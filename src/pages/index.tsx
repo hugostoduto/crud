@@ -3,8 +3,11 @@ import Table from "../components/Table";
 import Client from "../core/Client";
 import Button from "../components/Button";
 import Form from "../components/Form";
+4;
+import { useState } from "react";
 
 export default function Home() {
+  const [clients, setClients] = useState<"table" | "form">("table");
   const clientes = [
     new Client("Hugo", 25, "1"),
     new Client("João", 25, "2"),
@@ -16,6 +19,19 @@ export default function Home() {
   }
   function clientDeleted(client: Client) {
     console.log(client.name);
+  }
+
+  function toTable() {
+    setClients("table");
+  }
+  function toForm() {
+    setClients("form");
+  }
+  function saveClient(client: Client) {
+    console.log({
+      name: client.name,
+      age: client.age,
+    });
   }
 
   return (
@@ -30,17 +46,26 @@ export default function Home() {
     `}
     >
       <Layout title="Cadastro Simples">
-        <div className="flex justify-end">
-          <Button className="mb-4" color="green">
-            Novo Cliente
-          </Button>
-        </div>
-        <Table
-          clientDeleted={clientDeleted}
-          clientSelected={clientSelected}
-          clients={clientes}
-        ></Table>
-        <Form client={clientes[0]} />
+        {clients === "table" ? (
+          <>
+            <div className="flex justify-end">
+              <Button onClick={toForm} className="mb-4" color="green">
+                Novo Cliente
+              </Button>
+            </div>
+            <Table
+              clientDeleted={clientDeleted}
+              clientSelected={clientSelected}
+              clients={clientes}
+            ></Table>
+          </>
+        ) : (
+          <Form
+            clientChanged={saveClient}
+            cancel={toTable}
+            client={clientes[0]}
+          />
+        )}
       </Layout>
     </div>
   );
