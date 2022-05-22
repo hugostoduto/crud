@@ -35,12 +35,12 @@ export default function Home() {
             Novo Cliente
           </Button>
         </div>
-        {/* <Table
+        <Table
           clientDeleted={clientDeleted}
           clientSelected={clientSelected}
           clients={clientes}
-        ></Table> */}
-        <Form />
+        ></Table>
+        <Form client={clientes[0]} />
       </Layout>
     </div>
   );
