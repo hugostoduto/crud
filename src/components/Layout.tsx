@@ -15,6 +15,7 @@ export default function Layout(props: LayoutProps) {
     `}
     >
       <Title>{props.title}</Title>
+
       <div className="p-6">{props.children}</div>
     </div>
   );

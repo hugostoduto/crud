@@ -1,6 +1,8 @@
 import Layout from "../components/Layout";
 import Table from "../components/Table";
 import Client from "../core/Client";
+import Button from "../components/Button";
+import Form from "../components/Form";
 
 export default function Home() {
   const clientes = [
@@ -28,11 +30,17 @@ export default function Home() {
     `}
     >
       <Layout title="Cadastro Simples">
-        <Table
+        <div className="flex justify-end">
+          <Button className="mb-4" color="green">
+            Novo Cliente
+          </Button>
+        </div>
+        {/* <Table
           clientDeleted={clientDeleted}
           clientSelected={clientSelected}
           clients={clientes}
-        ></Table>
+        ></Table> */}
+        <Form />
       </Layout>
     </div>
   );
