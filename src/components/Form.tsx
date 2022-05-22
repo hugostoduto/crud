@@ -14,7 +14,7 @@ export default function Form(props: FormProps) {
   const [age, setAge] = useState(props.client?.age ?? 0);
   return (
     <div>
-      {id ? <Input className="mb-4" text="Id" readOnly value="Id" /> : false}
+      {id ? <Input className="mb-4" text="Id" readOnly value={id} /> : false}
 
       <Input className="mb-4" changeValue={setName} text="Nome" value={name} />
       <Input changeValue={setAge} text="Idade" type="number" value={age} />
