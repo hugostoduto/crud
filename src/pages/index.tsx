@@ -4,39 +4,44 @@ import Client from "../core/Client";
 import Button from "../components/Button";
 import Form from "../components/Form";
 4;
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ClientInterface from "../core/ClientInterface";
+import CollectionClients from "../backend/db/CollectionClients";
 
 export default function Home() {
-  const [state, setState] = useState<"table" | "form">("table");
-  const [clients, setClients] = useState<Client>(Client.void());
+  const repo: ClientInterface = new CollectionClients();
 
-  const clientes = [
-    new Client("Hugo", 25, "1"),
-    new Client("João", 25, "2"),
-    new Client("Maria", 25, "3"),
-    new Client("Pedro", 25, "4"),
-  ];
+  const [state, setState] = useState<"table" | "form">("table");
+  const [client, setClient] = useState<Client>(Client.void());
+  const [clients, setClients] = useState<Client[]>([]);
+
+  useEffect(getAll, []);
+
+  function getAll() {
+    repo.getAllClients().then((clients) => {
+      setClients(clients);
+      setState("table");
+    });
+  }
   function clientSelected(client: Client) {
-    setClients(client);
+    setClient(client);
     setState("form");
   }
-  function clientDeleted(client: Client) {
-    console.log(client.name);
+  async function clientDeleted(client: Client) {
+    await repo.deleteClient(client);
+    getAll();
   }
 
   function toTable() {
     setState("table");
   }
   function toForm() {
-    setClients(Client.void());
+    setClient(Client.void());
     setState("form");
   }
-  function saveClient(client: Client) {
-    setState("table");
-    console.log({
-      name: client.name,
-      age: client.age,
-    });
+  async function saveClient(client: Client) {
+    await repo.saveClient(client);
+    getAll();
   }
 
   return (
@@ -61,11 +66,11 @@ export default function Home() {
             <Table
               clientDeleted={clientDeleted}
               clientSelected={clientSelected}
-              clients={clientes}
+              clients={clients}
             ></Table>
           </>
         ) : (
-          <Form clientChanged={saveClient} cancel={toTable} client={clients} />
+          <Form clientChanged={saveClient} cancel={toTable} client={client} />
         )}
       </Layout>
     </div>
